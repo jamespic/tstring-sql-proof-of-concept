@@ -25,9 +25,10 @@ class TestSqlTemplates(TestCase):
         
     def test_happy_path(self):
         with self.conn.cursor() as cursor:
-            cursor.execute(t"SELECT col2 FROM test WHERE col1 = {1}")
-            result = cursor.fetchall()
-            self.assertEqual(result, [("Hello World",)])
+            for i, expected in [(1, "Hello World"), (2, "Goodbye")]:
+                cursor.execute(t"SELECT col2 FROM test WHERE col1 = {i}")
+                result = cursor.fetchall()
+                self.assertEqual(result, [(expected,)])
     
     def test_injection(self):
         with self.conn.cursor() as cursor:
