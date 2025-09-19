@@ -1,0 +1,1 @@
+This repo contains a proof of concept for using Python 3.14's t-strings to implement safe SQL queries. It is in no way production-ready.

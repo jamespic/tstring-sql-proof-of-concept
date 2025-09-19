@@ -28,3 +28,11 @@ class TestSqlTemplates(TestCase):
             cursor.execute(t"SELECT col2 FROM test WHERE col1 = {1}")
             result = cursor.fetchall()
             self.assertEqual(result, [("Hello World",)])
+    
+    def test_injection(self):
+        with self.conn.cursor() as cursor:
+            for payload in ["1 or 1=1;--", "1' or 1=1;--"]:
+                with self.subTest(payload):
+                    cursor.execute(t"SELECT col2 FROM test WHERE col1 = {payload}")
+                    result = cursor.fetchall()
+                    self.assertEqual(result, [])
